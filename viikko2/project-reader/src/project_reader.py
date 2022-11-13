@@ -29,17 +29,11 @@ class ProjectReader:
         """
         # tiedoston merkkijonomuotoinen sisältö
         content = request.urlopen(self._url).read().decode("utf-8")
-        print(content)
 
         # deserialisoi TOML-formaatissa oleva merkkijono ja muodosta Project-olio sen tietojen perusteella
         toml_dict = tomli.loads(content)
-        print(toml_dict)
         name = str(toml_dict['tool']['poetry']['name'])
         description = str(toml_dict['tool']['poetry']['description'])
         dependencies_list = list(toml_dict['tool']['poetry']['dependencies'].keys())
         dev_dependencies_list = list(toml_dict['tool']['poetry']['dev-dependencies'].keys())
-        print(name)
-        print(description)
-        print(dependencies_list)
-        print(dev_dependencies_list)
         return Project(name, description, dependencies_list, dev_dependencies_list)
