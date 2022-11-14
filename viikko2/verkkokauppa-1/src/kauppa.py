@@ -1,7 +1,5 @@
-from varasto import Varasto
-from pankki import Pankki
 from ostoskori import Ostoskori
-from viitegeneraattori import Viitegeneraattori
+
 
 
 class Kauppa:
