@@ -1,5 +1,6 @@
 *** Settings ***
 Resource  resource.robot
+Resource  login_resource.robot
 Suite Setup  Open And Configure Browser
 Suite Teardown  Close Browser
 Test Setup  Reset Application
@@ -20,6 +21,22 @@ Register With Valid Username And Too Short Password
 Register With Nonmatching Password And Password Confirmation
     Input Credentials  kalle  kalle123  kalle1234
     Page Should Contain   non matching passwords
+
+Login After Successful Registration
+    Input Credentials  kalle  kalle123  kalle123
+    Go To Login Page
+    Input Text  username  kalle
+    Input Password  password  kalle123
+    Click Button  Login
+    Main Page Should Be Open
+
+Login After Failed Registration
+    Input Credentials  kalle  kalle123  kalle321
+    Go To Login Page
+    Input Text  username  kalle
+    Input Password  password  kalle123
+    Click Button  Login
+    Page Should Contain  Invalid username or password
 
 *** Keywords ***
 Input Credentials
