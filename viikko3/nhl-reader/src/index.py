@@ -1,5 +1,7 @@
 import requests
 from player import Player
+from player_reader import PlayerReader
+from player_stats import PlayerStats
 
 def main():
     """{"name":"P.K. Subban",
@@ -11,30 +13,12 @@ def main():
         "games":77}
     """
     url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players"
-    response = requests.get(url)
-    players_json = response.json()
 
-    print("JSON-muotoinen vastaus:")
-    # print(players_json)
+    reader = PlayerReader(url)
+    stats = PlayerStats(reader)
+    players_ = stats.top_scorers_by_nationality("FIN")
 
-    players = []
-
-    for player_dict in players_json:
-        player = Player(
-            player_dict['name'],
-            player_dict['nationality'],
-            player_dict['assists'],
-            player_dict['goals'],
-            player_dict['penalties'],
-            player_dict['team'],
-            player_dict['games']
-        )
-
-        players.append(player)
-
-    print("Oliot:")
-
-    for player in players:
+    for player in players_:
         print(player)
 
 
