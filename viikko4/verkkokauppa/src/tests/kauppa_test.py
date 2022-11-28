@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, ANY
+from unittest.mock import Mock, ANY, call
 from kauppa import Kauppa
 from viitegeneraattori import Viitegeneraattori
 from varasto import Varasto
@@ -126,3 +126,53 @@ class TestKauppa(unittest.TestCase):
 
         # tilisiirto(self, nimi, viitenumero, tililta, tilille, summa):
         pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", ANY, 5)
+
+    def test5(self):
+        """Varmista, että metodin aloita_asiointi kutsuminen nollaa edellisen
+        ostoksen tiedot (eli edellisen ostoksen hinta ei näy uuden ostoksen
+        hinnassa), katso tarvittaessa apua projektin mock-demo testeistä!
+        """
+
+        kauppa = self.kauppa
+        pankki_mock = self.pankki_mock
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(2)
+        kauppa.tilimaksu("pekka", "12345")
+
+        # tilisiirto(self, nimi, viitenumero, tililta, tilille, summa):
+        pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", ANY, 7)
+
+    def test6(self):
+        """Varmista, että kauppa pyytää uuden viitenumeron jokaiselle
+        maksutapahtumalle, katso tarvittaessa apua projektin mock-demo
+        testeistä!
+        """
+
+        kauppa = self.kauppa
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("pekka", "12345")
+        kauppa.lisaa_koriin(2)
+        kauppa.tilimaksu("pekka", "12345")
+
+        viitegeneraattori_mock = self.viitegeneraattori_mock
+        viitegeneraattori_mock.assert_has_calls([call.uusi(), call.uusi()], any_order=True)
+
+    def test7(self):
+        """Tarkasta viikoilla 1 ja 2 käytetyn coveragen avulla mikä on luokan
+        Kauppa testauskattavuus.
+
+        Jotain taitaa puuttua. Lisää testi, joka nostaa kattavuuden noin
+        sataan prosenttiin!
+        """
+
+        kauppa = self.kauppa
+        pankki_mock = self.pankki_mock
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.poista_korista(1)
+        kauppa.lisaa_koriin(2)
+        kauppa.tilimaksu("pekka", "12345")
+        pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", ANY, 7)
