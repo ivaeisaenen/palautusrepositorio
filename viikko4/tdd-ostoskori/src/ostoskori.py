@@ -32,8 +32,8 @@ class Ostoskori:
                 return
 
     def tyhjenna(self):
-        pass
         # tyhjentää ostoskorin
+        self._ostos_oliot_list = []
 
     def ostokset(self):
         return self._ostos_oliot_list
