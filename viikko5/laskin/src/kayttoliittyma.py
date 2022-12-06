@@ -36,6 +36,14 @@ class Nollaus:
         self.Sovelluslogiikka.nollaa()
 
 
+class Kumoa:
+    def __init__(self, Sovelluslogiikka, lue_syote):
+        self.lue_syote = lue_syote
+        self.Sovelluslogiikka = Sovelluslogiikka
+
+    def suorita(self):
+        self.Sovelluslogiikka.kumoa()
+
 class Kayttoliittyma:
     def __init__(self, sovellus, root):
         self._sovellus = sovellus
@@ -45,7 +53,7 @@ class Kayttoliittyma:
             Komento.SUMMA: Summa(sovellus, self._lue_syote),
             Komento.EROTUS: Erotus(sovellus, self._lue_syote),
             Komento.NOLLAUS: Nollaus(sovellus, self._lue_syote),
-            # Komento.KUMOA: Kumoa(sovellus, self._lue_syote)
+            Komento.KUMOA: Kumoa(sovellus, self._lue_syote)
         }
 
 
@@ -104,6 +112,11 @@ class Kayttoliittyma:
         komento_obj.suorita()
         self._nollaus_painike["state"] = constants.NORMAL
 
+
+        if len(self._sovellus.tulokset) == 0:
+            self._kumoa_painike["state"] = constants.DISABLED
+        else:
+            self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovellus.tulos == 0:
             self._nollaus_painike["state"] = constants.DISABLED
