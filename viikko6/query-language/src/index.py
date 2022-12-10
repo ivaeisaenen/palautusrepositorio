@@ -26,28 +26,48 @@ def main():
     matcher = query.playsIn("NYR").hasAtLeast(10, "goals").hasFewerThan(20, "goals").build()
     for player in stats.matches(matcher):
         print(player)
-
     # Barclay Goodrow      NYR          13 + 20 = 33
     # Jacob Trouba         NYR          11 + 28 = 39
     # Adam Fox             NYR          11 + 63 = 74
     # Alexis Lafrenière    NYR          19 + 12 = 31
 
+    # Test 5.1
+    print()
+    m1 = query.playsIn("PHI").hasAtLeast(10, "assists").hasFewerThan(5, "goals").build()
+    m2 = query.playsIn("EDM").hasAtLeast(50, "points").build()
+    matcher = query.oneOf(m1, m2).build()
+    for player in stats.matches(matcher):
+        print(player)
+    # Keith Yandle         PHI          1  + 18 = 19
+    # Rasmus Ristolainen   PHI          2  + 14 = 16
+    # Zach Hyman           EDM          27 + 27 = 54
+    # Ryan Nugent-Hopkins  EDM          11 + 39 = 50
+    # Leon Draisaitl       EDM          55 + 55 = 110
+    # Connor McDavid       EDM          44 + 79 = 123
 
-    # matcher = And(
-    #     HasAtLeast(5, "goals"),
-    #     HasAtLeast(5, "assists"),
-    #     PlaysIn("PHI")
-    # )
+    # Test 5.2
+    print()
+    matcher = query.oneOf(query.playsIn("PHI").hasAtLeast(10, "assists").hasFewerThan(5, "goals").build(), query.playsIn("EDM").hasAtLeast(50, "points").build()).build()
+    for player in stats.matches(matcher):
+        print(player)
+    # Keith Yandle         PHI          1  + 18 = 19
+    # Rasmus Ristolainen   PHI          2  + 14 = 16
+    # Zach Hyman           EDM          27 + 27 = 54
+    # Ryan Nugent-Hopkins  EDM          11 + 39 = 50
+    # Leon Draisaitl       EDM          55 + 55 = 110
+    # Connor McDavid       EDM          44 + 79 = 123
 
+
+    # Test 2.0
+    # matcher = And(HasAtLeast(5, "goals"),HasAtLeast(5, "assists"),PlaysIn("PHI"))
     # for player in stats.matches(matcher):
     #     print(player)
 
-    # # Some test printing for task  2
+    # # Test 2.1
     # print()
     # matcher2_1 = And(Not(HasAtLeast(1, "goals")), PlaysIn("NYR"))
     # for player in stats.matches(matcher2_1):
     #     print(player)
-
     # # Sammy Blais          NYR          0  + 4  = 4
     # # Libor Hajek          NYR          0  + 1  = 1
     # # Tim Gettinger        NYR          0  + 0  = 0
@@ -58,11 +78,11 @@ def main():
     # # Adam Huska           NYR          0  + 0  = 0
     # # Alexandar Georgiev   NYR          0  + 0  = 0
 
+    # # Test 2.2
     # print()
     # matcher2_2 = And(HasFewerThan(1, "goals"),PlaysIn("NYR"))
     # for player in stats.matches(matcher2_2):
     #     print(player)
-
     # # Sammy Blais          NYR          0  + 4  = 4
     # # Libor Hajek          NYR          0  + 1  = 1
     # # Tim Gettinger        NYR          0  + 0  = 0
@@ -73,15 +93,15 @@ def main():
     # # Adam Huska           NYR          0  + 0  = 0
     # # Alexandar Georgiev   NYR          0  + 0  = 0
 
+    # # Test 2.3
     # filtered_with_all = stats.matches(All())
     # print(len(filtered_with_all))
 
-    # # Some test printing for task 3
+    # # Test 3.1
     # print()
     # matcher3_1 = Or(HasAtLeast(45, "goals"),HasAtLeast(70, "assists"))
     # for player in stats.matches(matcher3_1):
     #     print(player)
-
     # # Chris Kreider        NYR          52 + 25 = 77
     # # Artemi Panarin       NYR          22 + 74 = 96
     # # Auston Matthews      TOR          60 + 46 = 106
@@ -94,11 +114,11 @@ def main():
     # # Kirill Kaprizov      MIN          47 + 61 = 108
     # # Kyle Connor          WPG          47 + 46 = 93
 
+    # # Test 3.2
     # print()
     # matcher3_2 = And(HasAtLeast(70, "points"),Or(PlaysIn("NYR"),PlaysIn("FLA"),PlaysIn("BOS")))
     # for player in stats.matches(matcher3_2):
     #     print(player)
-
     # # Chris Kreider        NYR          52 + 25 = 77
     # # Mika Zibanejad       NYR          29 + 52 = 81
     # # Artemi Panarin       NYR          22 + 74 = 96
